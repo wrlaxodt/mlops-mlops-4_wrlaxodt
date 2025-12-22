@@ -5,3 +5,5 @@ RUN pip install --no-cache-dir -r /requirements.txt
 
 COPY dags.py /opt/airflow/dags
 COPY src /opt/airflow/src
+
+CMD ["airflow", "standalone"]
