@@ -35,7 +35,7 @@ class MoviePredictor:
             hidden_layer_sizes=params.hidden_layer_sizes,
             max_iter=params.max_iter,
             random_state=params.random_state,
-            warm_start=True,
+            warm_start=False,
         )
         self._classes = np.arange(num_classes)
 
