@@ -269,4 +269,8 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,python,visualstudiocode,dotenv,data
 
+# trained model artifacts
+models/
+*.pkl
+*.sha256
 
