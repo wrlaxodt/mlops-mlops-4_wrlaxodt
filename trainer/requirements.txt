@@ -1,0 +1,7 @@
+numpy==1.26.4
+python-dotenv==1.2.1
+pandas
+scikit-learn
+requests
+fire
+boto3
