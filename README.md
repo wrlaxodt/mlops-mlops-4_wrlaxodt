@@ -1,10 +1,9 @@
-# IMDB Movie Rating Prediction – MLOps Mini Project
+# Movie Recommendation Pipeline – MLOps Mini Project
 ## 1. Project Overview
-본 프로젝트는 IMDB 영화 평점 예측 모델을 대상으로,
-MLOps 아키텍처 중 '모델 구현'과 'Airflow를 활용한 Automated Pipeline’ 컴포넌트 구현에 집중한 미니 프로젝트입니다.
+본 프로젝트는 TMDB 영화 데이터를 기반하여 영화 추천 모델을 대상으로,  
+MLOps 아키텍처 중 **모델 학습 자동화**와 **Airflow 기반 파이프라인 오케스트레이션** 구현에 집중한 미니 프로젝트입니다.
 - 데이터 수집부터 학습, 평가, 추론까지의 머신러닝 파이프라인을 모듈화
 - 컨테이너 기반 Airflow를 사용하여 학습 파이프라인을 자동화
-- 학습된 모델을 API 형태로 서빙 가능한 구조(FastAPI)로 설계
 * 본 프로젝트에서는 CI/CD 파이프라인 및 고급 모니터링 시스템은 범위에서 제외하였습니다. 
 
 ## 2. Architecture Scope
@@ -16,30 +15,34 @@ MLOps 아키텍처 중 '모델 구현'과 'Airflow를 활용한 Automated Pipeli
 - Docker 기반 Airflow 운영
 - DockerOperator를 통한 ML 작업 실행
 #### Model Serving
-- FastAPI
+- (Design only) FastAPI 기반 모델 서빙 구조 설계
 ### Out of Scope
+- Online Model Serving (FastAPI runtime)
 - CI/CD Pipeline
 - Feature Store
 - Model Registry
 - Performance / Drift Monitoring
+### Model Serving (Design Only)
+본 프로젝트에서는 모델 서빙을 FastAPI 기반으로 확장할 수 있도록 inference 및 api 모듈을 설계하였으나,  
+이번 범위에서는 컨테이너 기반 학습 파이프라인 구현에 집중하여 실제 FastAPI 서버 실행 및 배포는 포함하지 않았습니다.
 
 ## 3. System Architecture
 ```text
-[Raw Data]
+[TMDB API]
      ↓
 [data_prepare]
      ↓
-[Dataset / Feature Engineering]
+[Watch Log Dataset]
      ↓
-[Train]
+[Train (Movie Recommendation Model)]
      ↓
-[Model Artifact (.pkl + hash)]
-     ↓
-[Airflow Automated Pipeline (DockerOperator)]
+[Airflow (DockerOperator)]
      ↓
 [Trainer Docker Container]
      ↓
-[FastAPI Prediction Service]
+[Model Artifact (.pkl + hash)]
+     ↓
+[S3 (External Model Storage)]
 ```
 
 ## 4. Project Structure
@@ -104,15 +107,15 @@ MLOps 아키텍처 중 '모델 구현'과 'Airflow를 활용한 Automated Pipeli
 - 공통 유틸리티 함수 관리
 
 ## 6. Automated Pipeline (Container-based Airflow)
-본 프로젝트에서는 Apache Airflow를 컨테이너 기반으로 운영하며,
+본 프로젝트에서는 Apache Airflow를 컨테이너 기반으로 운영하며,  
 각 ML 작업을 DockerOperator를 통해 독립된 컨테이너에서 실행합니다.
 ### DAG Overview
 DAG ID: mlops_automated_pipeline
-Schedule: 0 0 * * * (매일 00:00 실행)
+Schedule: 0 0 * * * (매일 09:00 KST 실행)
 Catchup: Disabled
 ### Implemented Task
 #### model_training
-- Docker Image: gobong/mlops-trainer:latest
+- Docker Image: {DOCKERHUB_USERNAME}/mlops-trainer:latest
 - Command:
 ```text
 python -m src.main train
@@ -132,7 +135,7 @@ Airflow는 다음 환경 변수를 Trainer 컨테이너에 주입합니다:
 - ML: scikit-learn
 - Pipeline Orchestration: Apache Airflow
 - Execution Runtime: Docker, DockerOperator
-- API Serving: FastAPI
+- Model Serving(Design only): FastAPI
 - Data Handling: pandas, numpy
 
 ## 8. Design Decisions
