@@ -1,8 +1,7 @@
 # Movie Recommendation Pipeline – MLOps Mini Project
 ## 1. Project Overview
 본 프로젝트는 TMDB 영화 데이터를 기반하여 영화 추천 모델을 대상으로,  
-MLOps 아키텍처 중 **모델 학습 자동화**와  
-**Airflow 기반 파이프라인 오케스트레이션** 구현에 집중한 미니 프로젝트입니다.
+MLOps 아키텍처 중 **모델 학습 자동화**와 **Airflow 기반 파이프라인 오케스트레이션** 구현에 집중한 미니 프로젝트입니다.
 - 데이터 수집부터 학습, 평가, 추론까지의 머신러닝 파이프라인을 모듈화
 - 컨테이너 기반 Airflow를 사용하여 학습 파이프라인을 자동화
 * 본 프로젝트에서는 CI/CD 파이프라인 및 고급 모니터링 시스템은 범위에서 제외하였습니다. 
@@ -24,10 +23,8 @@ MLOps 아키텍처 중 **모델 학습 자동화**와
 - Model Registry
 - Performance / Drift Monitoring
 ### Model Serving (Design Only)
-본 프로젝트에서는 모델 서빙을 FastAPI 기반으로 확장할 수 있도록  
-inference 및 api 모듈을 설계하였으나,  
-이번 범위에서는 컨테이너 기반 학습 파이프라인 구현에 집중하여  
-실제 FastAPI 서버 실행 및 배포는 포함하지 않았습니다.
+본 프로젝트에서는 모델 서빙을 FastAPI 기반으로 확장할 수 있도록 inference 및 api 모듈을 설계하였으나,  
+이번 범위에서는 컨테이너 기반 학습 파이프라인 구현에 집중하여 실제 FastAPI 서버 실행 및 배포는 포함하지 않았습니다.
 
 ## 3. System Architecture
 ```text
