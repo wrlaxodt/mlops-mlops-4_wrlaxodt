@@ -110,8 +110,8 @@ MLOps 아키텍처 중 **모델 학습 자동화**와 **Airflow 기반 파이프
 본 프로젝트에서는 Apache Airflow를 컨테이너 기반으로 운영하며,  
 각 ML 작업을 DockerOperator를 통해 독립된 컨테이너에서 실행합니다.
 ### DAG Overview
-DAG ID: mlops_automated_pipeline
-Schedule: 0 0 * * * (매일 09:00 KST 실행)
+DAG ID: mlops_automated_pipeline  
+Schedule: 0 0 * * * (매일 09:00 KST 실행)  
 Catchup: Disabled
 ### Implemented Task
 #### model_training
