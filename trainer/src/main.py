@@ -4,7 +4,8 @@ import fire
 import numpy as np
 from dotenv import load_dotenv
 
-from src.data_prepare.main import run_data_prepare
+from src.data_prepare.preprocessing import run_data_prepare
+
 from src.train.train import run_train
 from src.inference.inference import (
     load_checkpoint,
@@ -13,13 +14,21 @@ from src.inference.inference import (
 )
 
 
-def preprocessing(date: str = "25-05-12"):
+def preprocessing(
+    output_csv: str = "dataset/watch_log.csv",
+    user_count: int = 100,
+    max_select_count: int = 20,
+    seed: int = 0,
+):
+    """
+    IMDb TSV 기반 watch_log.csv 생성
+    """
     load_dotenv()
-    print(f"Run date : {date}")
     return run_data_prepare(
-        start_page=1,
-        end_page=1,
-        output_csv="dataset/watch_log.csv",
+        output_csv=output_csv,
+        user_count=user_count,
+        max_select_count=max_select_count,
+        seed=seed,
     )
 
 
