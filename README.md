@@ -1,4 +1,4 @@
-# Movie Recommendation Pipeline – MLOps Mini Project
+# Movie Rating Prediction Pipeline – MLOps Mini Project
 ## 1. Project Overview
 본 프로젝트는 IMDb 영화 데이터를 기반으로 한 영화 평점 예측 모델을 대상으로,  
 MLOps 아키텍처 중 **모델 학습 자동화**와 **Airflow 기반 파이프라인 오케스트레이션** 구현에 집중한 미니 프로젝트입니다.
