@@ -1,6 +1,6 @@
 # Movie Recommendation Pipeline – MLOps Mini Project
 ## 1. Project Overview
-본 프로젝트는 TMDB 영화 데이터를 기반하여 영화 추천 모델을 대상으로,  
+본 프로젝트는 IMDb 영화 데이터를 기반으로 한 영화 평점 예측 모델을 대상으로,  
 MLOps 아키텍처 중 **모델 학습 자동화**와 **Airflow 기반 파이프라인 오케스트레이션** 구현에 집중한 미니 프로젝트입니다.
 - 데이터 수집부터 학습, 평가, 추론까지의 머신러닝 파이프라인을 모듈화
 - 컨테이너 기반 Airflow를 사용하여 학습 파이프라인을 자동화
@@ -28,21 +28,19 @@ MLOps 아키텍처 중 **모델 학습 자동화**와 **Airflow 기반 파이프
 
 ## 3. System Architecture
 ```text
-[TMDB API]
+[IMDb Public Dataset (TSV)]
      ↓
-[data_prepare]
+[data_prepare (Batch)]
      ↓
 [Watch Log Dataset]
-     ↓
-[Train (Movie Recommendation Model)]
      ↓
 [Airflow (DockerOperator)]
      ↓
 [Trainer Docker Container]
      ↓
-[Model Artifact (.pkl + hash)]
+[Train (Movie Rating Prediction Model)]
      ↓
-[S3 (External Model Storage)]
+[Model Artifact (.pkl + hash)]
 ```
 
 ## 4. Project Structure
@@ -56,12 +54,10 @@ MLOps 아키텍처 중 **모델 학습 자동화**와 **Airflow 기반 파이프
 ├── trainer/
 │   ├── dataset/
 │   │   └── raw/
-│   │       └── popular.json
+│   │       └── title.ratings.tsv.gz
 │   └── src/
 │       ├── data_prepare/
-│       │   ├── crawler.py
 │       │   ├── preprocessing.py
-│       │   └── main.py
 │       ├── dataset/
 │       │   ├── data_loader.py
 │       │   └── watch_log.py
@@ -89,9 +85,11 @@ MLOps 아키텍처 중 **모델 학습 자동화**와 **Airflow 기반 파이프
 
 ## 5. Core Components
 ### 5.1 Data Preparation (data_prepare)
-- 원천 데이터 수집 및 정제
-- 학습에 필요한 데이터셋 생성
+- IMDb 공개 평점 데이터(tsv.gz) 기반 배치 전처리
+- 실시간 API 호출 없이 파일 기반 데이터 처리
+- 학습에 필요한 watch log 데이터셋 생성
 - 파이프라인의 선행 단계 (현재 DAG에는 미포함, 확장 가능)
+- IMDb 데이터는 실시간 API가 아닌 Bulk Dataset 형태로 제공되며, 본 프로젝트에서는 이를 배치 데이터 소스로 취급함
 ### 5.2 Training (train)
 - Scikit-learn 기반 영화 평점 예측 모델 학습
 - 학습 결과를 .pkl 파일로 저장
